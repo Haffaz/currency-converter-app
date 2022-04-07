@@ -12,14 +12,21 @@ const CountryCard = ({ item }: CountryCardProp) => (
       <Image source={{ uri: item.flags.png }} style={styles.flagImg} />
     </View>
     <View style={styles.detailsContainer}>
-      <View style={{ flex: 1 }}>
-        <Text numberOfLines={3} ellipsizeMode="tail" style={styles.name}>
-          {item.name.official}
-        </Text>
-        <Text style={styles.capital}>{item.capital}</Text>
+      <View style={styles.countryInfoContainer}>
+        <View style={styles.nameContainer}>
+          <Text numberOfLines={2} ellipsizeMode="tail" style={styles.name}>
+            {item.name.common}
+          </Text>
+          <Text style={styles.capital}>{item.capital}</Text>
+        </View>
+        <View style={styles.populationContainer}>
+          <Text style={styles.sectionTitle}>Population</Text>
+          <Text style={styles.section}>{item.population.toLocaleString()}</Text>
+        </View>
       </View>
       {!!item.currencies && (
-        <View style={styles.currencyContainer}>
+        <View>
+          <Text style={styles.sectionTitle}>Currencies</Text>
           {Object.values(item.currencies).map((currency, index) => (
             <Text key={currency.name} style={styles.currency}>
               {currency.name}
@@ -28,12 +35,6 @@ const CountryCard = ({ item }: CountryCardProp) => (
           ))}
         </View>
       )}
-    </View>
-    <View>
-      <View style={styles.populationContainer}>
-        <Text style={styles.populationTitle}>Population</Text>
-        <Text style={styles.population}>{item.population.toLocaleString()}</Text>
-      </View>
     </View>
   </View>
 );
@@ -69,14 +70,19 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     flex: 1,
-    marginLeft: 16,
-    marginRight: 8,
+    marginLeft: 8,
+    justifyContent: "space-between",
   },
-  currencyContainer: {
-    // flexDirection: "row",
+  countryInfoContainer: {
+    marginRight: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  nameContainer: {
+    flex: 1,
   },
   name: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "bold",
   },
   capital: {
@@ -84,16 +90,18 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   currency: {
-    fontSize: 12,
+    fontSize: 10,
   },
   populationContainer: {
     alignItems: "flex-end",
   },
-  populationTitle: {
+  sectionTitle: {
     fontSize: 10,
+    fontWeight: "bold",
     color: "grey",
+    marginBottom: 2,
   },
-  population: {
+  section: {
     fontSize: 12,
     fontWeight: "bold",
   },
