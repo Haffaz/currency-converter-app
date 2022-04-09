@@ -6,6 +6,7 @@ import ConvertButton from "../components/ConvertButton";
 import useGetLatestExchangeRates from "../api/exchangeRates/useGetLatestExchangeRates";
 import mapRecordToArray from "../util/mapRecordToArray";
 import { ConvertedValue } from "../types";
+import StyleGuide from "../styles/StyleGuide";
 
 type Props = NativeStackScreenProps<RootStackParams, "Rates">;
 
@@ -108,16 +109,16 @@ const RatesPage = ({ route }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: StyleGuide.spacing.md,
   },
   inputWrapper: {
     flexDirection: "row",
     backgroundColor: "white",
     height: 45,
-    borderRadius: 8,
+    borderRadius: StyleGuide.spacing.sm,
     alignItems: "center",
-    padding: 8,
-    marginVertical: 8,
+    padding: StyleGuide.spacing.sm,
+    marginVertical: StyleGuide.spacing.sm,
   },
   inputLeftContainer: {
     flexDirection: "row",
@@ -125,13 +126,13 @@ const styles = StyleSheet.create({
   },
   flag: {
     fontSize: 24,
-    marginRight: 4,
+    marginRight: StyleGuide.spacing.xs,
   },
   currencyCode: {
     fontSize: 20,
   },
   textInput: {
-    marginRight: 8,
+    marginRight: StyleGuide.spacing.sm,
     flex: 1,
   },
   inputFont: {
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     alignItems: "center",
-    padding: 16,
+    padding: StyleGuide.spacing.md,
   },
 });
 export default RatesPage;

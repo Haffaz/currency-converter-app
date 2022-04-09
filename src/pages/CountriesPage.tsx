@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   NativeSyntheticEvent,
   StyleSheet,
@@ -10,17 +11,20 @@ import {
 } from "react-native";
 import useGetAllCountries from "../api/countries/useGetAllCountries";
 import { Country } from "../api/countries/countries.types";
-import CountryCard from "../components/CountryCard";
+import CountryCard, { CARD_HEIGHT } from "../components/CountryCard";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParams } from "../navigation/RootStack";
+import StyleGuide from "../styles/StyleGuide";
+import VerticalItemSeparator, {
+  VERTICAL_SEPARATOR_HEIGHT,
+} from "../components/VerticalItemSeparator";
 
 const CountriesPage = () => {
   const { data, isLoading, isError } = useGetAllCountries();
   const [keyword, setKeyword] = useState("");
 
   const navigation = useNavigation();
-
   useEffect(() => {
     navigation.setOptions({
       headerSearchBarOptions: {
@@ -43,35 +47,53 @@ const CountriesPage = () => {
 
   const { navigate } = useNavigation<NativeStackNavigationProp<RootStackParams>>();
 
-  const goToRatesPage = (country: Country) => {
-    navigate("Rates", {
-      country: {
-        name: country.name.common,
-        currencies: Object.keys(country.currencies),
-        flag: country.flag,
-      },
-    });
-  };
+  const goToRatesPage = useCallback(
+    (country: Country) => () => {
+      navigate("Rates", {
+        country: {
+          name: country.name.common,
+          currencies: Object.keys(country.currencies),
+          flag: country.flag,
+        },
+      });
+    },
+    [],
+  );
+
+  if (isError) {
+    Alert.alert(
+      "Oops! Something went wrong.",
+      "Couldn't get the list of countries. Please try again.",
+    );
+  }
 
   const renderItem = ({ item }: { item: Country }) => (
-    <TouchableOpacity activeOpacity={0.7} onPress={() => goToRatesPage(item)}>
+    <TouchableOpacity activeOpacity={0.7} onPress={goToRatesPage(item)}>
       <CountryCard {...{ item }} />
     </TouchableOpacity>
   );
 
   const keyExtractor = (item: Country) => item.name.official;
 
-  const ItemSeparatorComponent = () => <View style={styles.separator} />;
+  const getItemLayout = (data: Country[] | null | undefined, index: number) => ({
+    length: CARD_HEIGHT,
+    offset: (CARD_HEIGHT + VERTICAL_SEPARATOR_HEIGHT) * index,
+    index,
+  });
+
+  const ItemSeparatorComponent = () => <VerticalItemSeparator />;
+
   return (
     <View style={styles.container}>
       {isLoading && <ActivityIndicator />}
       {!!data && (
         <FlatList
-          {...{ renderItem, keyExtractor, ItemSeparatorComponent }}
+          {...{ renderItem, keyExtractor, ItemSeparatorComponent, getItemLayout }}
           data={getFilteredCountries(data)}
+          removeClippedSubviews={true}
           showsVerticalScrollIndicator={false}
           contentInsetAdjustmentBehavior="automatic"
-          contentInset={{ top: 16 }}
+          contentInset={{ top: StyleGuide.spacing.md }}
         />
       )}
     </View>
@@ -81,10 +103,7 @@ const CountriesPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-  },
-  separator: {
-    height: 16,
+    padding: StyleGuide.spacing.md,
   },
 });
 

@@ -9,7 +9,6 @@ type UseGetLatestRatesProps = {
 };
 
 const getLatestExchangeRates = async ({ base }: GetLatestRatesParams) => {
-  console.log(base);
   const params = `?access_key=${API_KEY}&symbols=${base}`;
   const res = await fetch(ROUTES.GET_LATEST_RATES + params, {
     method: "POST",

@@ -1,6 +1,7 @@
-import React from "react";
+import React, {memo} from "react";
 import { Country } from "../api/countries/countries.types";
 import { Image, StyleSheet, Text, View } from "react-native";
+import StyleGuide from "../styles/StyleGuide";
 
 type CountryCardProp = {
   item: Country;
@@ -41,16 +42,16 @@ const CountryCard = ({ item }: CountryCardProp) => (
 
 const FLAG_HEIGHT = 213 * 0.4;
 const FLAG_WIDTH = 320 * 0.4;
-const CARD_HEIGHT = FLAG_HEIGHT + 32;
+export const CARD_HEIGHT = FLAG_HEIGHT + 32;
 
 const styles = StyleSheet.create({
   container: {
     height: CARD_HEIGHT,
     width: "100%",
-    borderRadius: 8,
+    borderRadius: StyleGuide.spacing.sm,
     flexDirection: "row",
     backgroundColor: "white",
-    padding: 16,
+    padding: StyleGuide.spacing.md,
   },
   flagWrapper: {
     width: FLAG_WIDTH,
@@ -66,11 +67,11 @@ const styles = StyleSheet.create({
   flagImg: {
     height: "100%",
     width: "100%",
-    borderRadius: 4,
+    borderRadius: StyleGuide.spacing.xs,
   },
   detailsContainer: {
     flex: 1,
-    marginLeft: 8,
+    marginLeft: StyleGuide.spacing.sm,
     justifyContent: "space-between",
   },
   countryInfoContainer: {
@@ -107,4 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CountryCard;
+export default memo(CountryCard);
