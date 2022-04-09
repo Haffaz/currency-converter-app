@@ -1,5 +1,7 @@
 export interface CountryBasicInfo {
   name: string;
+  capital?: string;
+  population: number;
   flag: symbol;
   currencies: Array<string>;
 }

@@ -29,6 +29,7 @@ const CountriesPage = () => {
     navigation.setOptions({
       headerSearchBarOptions: {
         placeholder: "Search Country...",
+        hideWhenScrolling: false,
         onChangeText: (e: NativeSyntheticEvent<TextInputChangeEventData>) =>
           onSearch(e.nativeEvent.text),
       },
@@ -52,8 +53,10 @@ const CountriesPage = () => {
       navigate("Rates", {
         country: {
           name: country.name.common,
-          currencies: Object.keys(country.currencies),
           flag: country.flag,
+          capital: !!country.capital ? country.capital.toLocaleString() : undefined,
+          population: country.population,
+          currencies: !!country.currencies ? Object.keys(country.currencies) : [],
         },
       });
     },

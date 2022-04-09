@@ -1,15 +1,20 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 type ConvertButtonProps = {
   onPress: () => void;
+  isLoading: boolean;
 };
 
-const ConvertButton = ({ onPress }: ConvertButtonProps) => (
+const ConvertButton = ({ isLoading, onPress }: ConvertButtonProps) => (
   <TouchableOpacity {...{ onPress }} activeOpacity={0.7}>
     <View style={styles.button}>
-      <MaterialIcons name="sync-alt" size={24} color="black" />
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <MaterialIcons name="sync-alt" size={24} color="black" />
+      )}
     </View>
   </TouchableOpacity>
 );

@@ -1,7 +1,7 @@
-import React, {memo} from "react";
+import React, { memo } from "react";
 import { Country } from "../api/countries/countries.types";
 import { Image, StyleSheet, Text, View } from "react-native";
-import StyleGuide, {FONTS} from "../styles/StyleGuide";
+import StyleGuide, { FONTS } from "../styles/StyleGuide";
 
 type CountryCardProp = {
   item: Country;

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParams } from "../navigation/RootStack";
 import ConvertButton from "../components/ConvertButton";
 import useGetLatestExchangeRates from "../api/exchangeRates/useGetLatestExchangeRates";
 import mapRecordToArray from "../util/mapRecordToArray";
 import { ConvertedValue } from "../types";
-import StyleGuide, {FONTS} from "../styles/StyleGuide";
+import StyleGuide, { FONTS } from "../styles/StyleGuide";
 
 type Props = NativeStackScreenProps<RootStackParams, "Rates">;
 
@@ -15,7 +15,9 @@ export const SEK_CODE = "SEK";
 const RatesPage = ({ route }: Props) => {
   const { country } = route.params;
   const [amount, setAmount] = useState("");
-  const [convertedValues, setConvertedValues] = useState<ConvertedValue[]>([]);
+  const [convertedValues, setConvertedValues] = useState<ConvertedValue[]>(
+    country.currencies.map((currency) => ({ currency: currency, amount: 0 })),
+  );
 
   const { mutate, data, isLoading } = useGetLatestExchangeRates({
     onSuccess: (response) => {
@@ -83,12 +85,19 @@ const RatesPage = ({ route }: Props) => {
           <Text style={styles.currencyCode}>SEK</Text>
         </View>
       </View>
-
       <View style={styles.buttonWrapper}>
-        <ConvertButton onPress={handleConversion} />
+        <ConvertButton {...{ isLoading }} onPress={handleConversion}  />
       </View>
-      <Text>{country.name}</Text>
-      {isLoading && <ActivityIndicator />}
+      <View style={styles.countryDetailsContainer}>
+        <View>
+          <Text style={styles.countryName}>{country.name}</Text>
+          {!!country.capital && <Text style={styles.capital}>{country.capital}</Text>}
+        </View>
+        <View>
+          <Text style={styles.populationTitle}>Population</Text>
+          <Text style={styles.population}>{country.population}</Text>
+        </View>
+      </View>
       {!!convertedValues &&
         convertedValues.length > 0 &&
         convertedValues.map(({ currency, amount }) => (
@@ -143,6 +152,31 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     alignItems: "center",
     padding: StyleGuide.spacing.md,
+  },
+  countryDetailsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: StyleGuide.spacing.sm,
+  },
+  countryName: {
+    fontSize: 24,
+    fontFamily: FONTS.Roboto_400Regular,
+    textAlign: "center",
+  },
+  capital: {
+    fontSize: 10,
+    fontFamily: FONTS.Roboto_400Regular,
+    color: "grey",
+  },
+  populationTitle: {
+    fontSize: 10,
+    fontFamily: FONTS.Roboto_500Medium,
+    color: "grey",
+    marginBottom: 2,
+  },
+  population: {
+    fontSize: 12,
+    fontFamily: FONTS.Roboto_700Bold,
   },
 });
 export default RatesPage;
