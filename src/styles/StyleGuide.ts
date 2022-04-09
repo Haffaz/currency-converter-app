@@ -1,28 +1,16 @@
-import {Dimensions} from "react-native";
-// import { StackNavigationOptions } from "@react-navigation/stack";
-// import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
+import { Dimensions } from "react-native";
 
 export const DEVICE_HEIGHT = Dimensions.get("window").height;
 export const DEVICE_WIDTH = Dimensions.get("window").width;
 
-// export const HEADER_HEIGHT = DEVICE_HEIGHT * 0.12;
-
-// export const BOTTOM_TAB_HEIGHT = 64;
-// export const BOTTOM_TAB_ICON_SIZE = 24;
-
-// export const INPUT_HEIGHT = 45;
-// export const ACTIVE_OPACITY = 0.8;
-
-// export enum FONTS {
-//     CircularStdBlack = "CircularStd-Black",
-//     CircularStdBlackItalic = "CircularStd-BlackItalic",
-//     CircularStdBold = "CircularStd-Bold",
-//     CircularStdBoldItalic = "CircularStd-BoldItalic",
-//     CircularStdBook = "CircularStd-Book",
-//     CircularStdBookItalic = "CircularStd-BookItalic",
-//     CircularStdMedium = "CircularStd-Medium",
-//     CircularStdMediumItalic = "CircularStd-MediumItalic",
-// }
+export enum FONTS {
+  Roboto_100Thin = "Roboto_100Thin",
+  Roboto_300Light = "Roboto_300Light",
+  Roboto_400Regular = "Roboto_400Regular",
+  Roboto_500Medium = "Roboto_500Medium",
+  Roboto_700Bold = "Roboto_700Bold",
+  Roboto_900Black = "Roboto_900Black",
+}
 
 const StyleGuide = {
   spacing: {

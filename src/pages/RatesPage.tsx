@@ -6,7 +6,7 @@ import ConvertButton from "../components/ConvertButton";
 import useGetLatestExchangeRates from "../api/exchangeRates/useGetLatestExchangeRates";
 import mapRecordToArray from "../util/mapRecordToArray";
 import { ConvertedValue } from "../types";
-import StyleGuide from "../styles/StyleGuide";
+import StyleGuide, {FONTS} from "../styles/StyleGuide";
 
 type Props = NativeStackScreenProps<RootStackParams, "Rates">;
 
@@ -130,12 +130,14 @@ const styles = StyleSheet.create({
   },
   currencyCode: {
     fontSize: 20,
+    fontFamily: FONTS.Roboto_500Medium,
   },
   textInput: {
-    marginRight: StyleGuide.spacing.sm,
     flex: 1,
+    marginRight: StyleGuide.spacing.sm,
   },
   inputFont: {
+    fontFamily: FONTS.Roboto_300Light,
     fontSize: 24,
   },
   buttonWrapper: {

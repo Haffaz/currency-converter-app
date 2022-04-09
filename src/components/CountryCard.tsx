@@ -1,7 +1,7 @@
 import React, {memo} from "react";
 import { Country } from "../api/countries/countries.types";
 import { Image, StyleSheet, Text, View } from "react-native";
-import StyleGuide from "../styles/StyleGuide";
+import StyleGuide, {FONTS} from "../styles/StyleGuide";
 
 type CountryCardProp = {
   item: Country;
@@ -22,7 +22,7 @@ const CountryCard = ({ item }: CountryCardProp) => (
         </View>
         <View style={styles.populationContainer}>
           <Text style={styles.sectionTitle}>Population</Text>
-          <Text style={styles.section}>{item.population.toLocaleString()}</Text>
+          <Text style={styles.population}>{item.population.toLocaleString()}</Text>
         </View>
       </View>
       {!!item.currencies && (
@@ -84,27 +84,29 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: FONTS.Roboto_500Medium,
   },
   capital: {
     fontSize: 10,
+    fontFamily: FONTS.Roboto_400Regular,
     color: "grey",
   },
   currency: {
     fontSize: 10,
+    fontFamily: FONTS.Roboto_400Regular,
   },
   populationContainer: {
     alignItems: "flex-end",
   },
   sectionTitle: {
     fontSize: 10,
-    fontWeight: "bold",
+    fontFamily: FONTS.Roboto_500Medium,
     color: "grey",
     marginBottom: 2,
   },
-  section: {
+  population: {
     fontSize: 12,
-    fontWeight: "bold",
+    fontFamily: FONTS.Roboto_700Bold,
   },
 });
 

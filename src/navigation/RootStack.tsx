@@ -4,6 +4,7 @@ import CountriesPage from "../pages/CountriesPage";
 import { NavigationContainer } from "@react-navigation/native";
 import RatesPage from "../pages/RatesPage";
 import { CountryBasicInfo } from "../types";
+import { FONTS } from "../styles/StyleGuide";
 
 export type RootStackParams = {
   Countries: undefined;
@@ -14,7 +15,15 @@ const Stack = createNativeStackNavigator<RootStackParams>();
 
 const RootStack = () => (
   <NavigationContainer>
-    <Stack.Navigator initialRouteName="Countries">
+    <Stack.Navigator
+      initialRouteName="Countries"
+      screenOptions={{
+        headerTitleStyle: {
+          fontFamily: FONTS.Roboto_500Medium,
+        },
+        headerBackTitleVisible: false,
+      }}
+    >
       <Stack.Screen name="Countries" component={CountriesPage} />
       <Stack.Screen name="Rates" component={RatesPage} />
     </Stack.Navigator>
