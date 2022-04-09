@@ -29,15 +29,21 @@ const RatesPage = ({ route }: Props) => {
     },
   });
 
-  const validateAmount = (value: string) => {
-    // Check if entered input is not a number
-    if (Number.isNaN(value)) {
+  /**
+   * Takes value from text input and check if value is a valid number number and sets value to state.
+   * @param value: TextInput value
+   * */
+  const setValidAmount = (value: string) => {
+    if (Number.isNaN(value) || value.trim() == null) {
       Alert.alert("Invalid amount !", "Amount should be a valid number.");
     } else {
       setAmount(value.trim());
     }
   };
 
+  /**
+   * Calls mutation functions to get exchange rates if amount is not null.
+   * */
   const fetchExchangeRates = () => {
     if (!!amount && amount.length > 0) {
       mutate({ base: `${country.currencies.toLocaleString()},${SEK_CODE}` });
@@ -46,15 +52,22 @@ const RatesPage = ({ route }: Props) => {
     }
   };
 
+  /**
+   * Calculates exchange rates if rates have been fetched,
+   * or else will fetch the exchange rates on button click
+   * */
   const handleConversion = () => {
     if (!!data && !!data.rates) {
-      // if already fetched exchange rates, calculate rates.
       calculateRates(data.rates);
     } else {
       fetchExchangeRates();
     }
   };
 
+  /**
+   * Calculates conversion rates for given rates record and sets to state
+   * @param ratesRecord: Record of rates
+   * */
   const calculateRates = (ratesRecord: Record<string, number>) => {
     const rates = mapRecordToArray<string, number>(ratesRecord); // Array of rates mapped from given records
     const eurToSekRate = rates.find((rate) => rate.key === SEK_CODE); // SEK value for 1EUR
@@ -66,7 +79,6 @@ const RatesPage = ({ route }: Props) => {
       return { currency: key, amount: convertedValue };
     });
 
-    // console.debug("Converted values", latestConvertedValues);
     setConvertedValues(latestConvertedValues);
   };
 
@@ -76,7 +88,7 @@ const RatesPage = ({ route }: Props) => {
         <TextInput
           placeholder="Enter Amount (SEK)"
           value={amount.toLocaleString()}
-          onChangeText={validateAmount}
+          onChangeText={setValidAmount}
           keyboardType="numeric"
           style={[styles.textInput, styles.inputFont]}
         />

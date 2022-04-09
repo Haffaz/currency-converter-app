@@ -19,12 +19,19 @@ const RootStack = () => (
       initialRouteName="Countries"
       screenOptions={{
         headerTitleStyle: {
+          fontSize: 18,
           fontFamily: FONTS.Roboto_500Medium,
         },
         headerBackTitleVisible: false,
       }}
     >
-      <Stack.Screen name="Countries" component={CountriesPage} />
+      <Stack.Screen
+        name="Countries"
+        component={CountriesPage}
+        options={{
+          headerTitle: "Currency Converter",
+        }}
+      />
       <Stack.Screen name="Rates" component={RatesPage} />
     </Stack.Navigator>
   </NavigationContainer>

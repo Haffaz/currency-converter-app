@@ -24,7 +24,8 @@ const CountriesPage = () => {
   const { data, isLoading, isError } = useGetAllCountries();
   const [keyword, setKeyword] = useState("");
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParams>>();
+
   useEffect(() => {
     navigation.setOptions({
       headerSearchBarOptions: {
@@ -42,15 +43,17 @@ const CountriesPage = () => {
     }
   };
 
+  /**
+   * Takes the list of countries and filters by the given keyword.
+   * @param countries: List of countries return from get all countries request
+   * */
   const getFilteredCountries = (countries: Country[]) => {
     return countries.filter((country) => country.name.official.includes(keyword));
   };
 
-  const { navigate } = useNavigation<NativeStackNavigationProp<RootStackParams>>();
-
   const goToRatesPage = useCallback(
     (country: Country) => () => {
-      navigate("Rates", {
+      navigation.navigate("Rates", {
         country: {
           name: country.name.common,
           flag: country.flag,
@@ -93,8 +96,8 @@ const CountriesPage = () => {
         <FlatList
           {...{ renderItem, keyExtractor, ItemSeparatorComponent, getItemLayout }}
           data={getFilteredCountries(data)}
-          removeClippedSubviews={true}
           showsVerticalScrollIndicator={false}
+          maxToRenderPerBatch={8}
           contentInsetAdjustmentBehavior="automatic"
           contentInset={{ top: StyleGuide.spacing.md }}
         />
