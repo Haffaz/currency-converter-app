@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextInputChangeEventData,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import useGetAllCountries from "../api/countries/useGetAllCountries";
 import { Country } from "../api/countries/countries.types";
 import CountryCard from "../components/CountryCard";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParams } from "../navigation/RootStack";
 
 const CountriesPage = () => {
   const { data, isLoading, isError } = useGetAllCountries();
@@ -15,7 +25,8 @@ const CountriesPage = () => {
     navigation.setOptions({
       headerSearchBarOptions: {
         placeholder: "Search Country...",
-        onChangeText: (event) => onSearch(event.nativeEvent.text),
+        onChangeText: (e: NativeSyntheticEvent<TextInputChangeEventData>) =>
+          onSearch(e.nativeEvent.text),
       },
     });
   }, [navigation]);
@@ -30,7 +41,23 @@ const CountriesPage = () => {
     return countries.filter((country) => country.name.official.includes(keyword));
   };
 
-  const renderItem = ({ item }: { item: Country }) => <CountryCard {...{ item }} />;
+  const { navigate } = useNavigation<NativeStackNavigationProp<RootStackParams>>();
+
+  const goToRatesPage = (country: Country) => {
+    navigate("Rates", {
+      country: {
+        name: country.name.common,
+        currencies: Object.keys(country.currencies),
+        flag: country.flag,
+      },
+    });
+  };
+
+  const renderItem = ({ item }: { item: Country }) => (
+    <TouchableOpacity activeOpacity={0.7} onPress={() => goToRatesPage(item)}>
+      <CountryCard {...{ item }} />
+    </TouchableOpacity>
+  );
 
   const keyExtractor = (item: Country) => item.name.official;
 
