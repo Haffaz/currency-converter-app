@@ -3,3 +3,8 @@ export interface CountryBasicInfo {
   flag: symbol;
   currencies: Array<string>;
 }
+
+export interface ConvertedValue {
+  currency: string;
+  amount: number;
+}

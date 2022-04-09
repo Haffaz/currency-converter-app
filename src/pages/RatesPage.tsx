@@ -5,6 +5,7 @@ import { RootStackParams } from "../navigation/RootStack";
 import ConvertButton from "../components/ConvertButton";
 import useGetLatestExchangeRates from "../api/exchangeRates/useGetLatestExchangeRates";
 import mapRecordToArray from "../util/mapRecordToArray";
+import { ConvertedValue } from "../types";
 
 type Props = NativeStackScreenProps<RootStackParams, "Rates">;
 
@@ -13,19 +14,20 @@ export const SEK_CODE = "SEK";
 const RatesPage = ({ route }: Props) => {
   const { country } = route.params;
   const [amount, setAmount] = useState("");
-  const [convertedValues, setConvertedValues] = useState<{ currency: string; amount: number }[]>(
-    [],
-  );
+  const [convertedValues, setConvertedValues] = useState<ConvertedValue[]>([]);
 
   const { mutate, data, isLoading } = useGetLatestExchangeRates({
-    onSuccess: (resp) => {
-      if (resp.rates !== undefined) {
-        calculateRates(resp.rates);
+    onSuccess: (response) => {
+      // console.debug("LatestRatesResponse", response);
+      if (response.rates !== undefined) {
+        calculateRates(response.rates);
       }
+      // TODO: if (response.error !==  null) { handle error }
     },
   });
 
   const validateAmount = (value: string) => {
+    // Check if entered input is not a number
     if (Number.isNaN(value)) {
       Alert.alert("Invalid amount !", "Amount should be a valid number.");
     } else {
@@ -43,6 +45,7 @@ const RatesPage = ({ route }: Props) => {
 
   const handleConversion = () => {
     if (!!data && !!data.rates) {
+      // if already fetched exchange rates, calculate rates.
       calculateRates(data.rates);
     } else {
       fetchExchangeRates();
@@ -52,13 +55,16 @@ const RatesPage = ({ route }: Props) => {
   const calculateRates = (ratesRecord: Record<string, number>) => {
     const rates = mapRecordToArray<string, number>(ratesRecord); // Array of rates mapped from given records
     const eurToSekRate = rates.find((rate) => rate.key === SEK_CODE); // SEK value for 1EUR
-    const filteredRates = rates.filter((rate) => rate.key !== SEK_CODE); // rates without SEK
+    const filteredRates = rates.filter((rate) => rate.key !== SEK_CODE); // Rates without SEK
 
-    filteredRates.forEach(({ key, value }) => {
-      const exchangeRate = value / eurToSekRate!.value; // given currency's value of 1 SEK
-      const convertedValue = exchangeRate * Number(amount); // given currency's  value of entered amount of SEK
-      setConvertedValues([...convertedValues, { currency: key, amount: convertedValue }]);
+    const latestConvertedValues: ConvertedValue[] = filteredRates.map(({ key, value }) => {
+      const exchangeRate = value / eurToSekRate!.value; // Given currency's value of 1 SEK
+      const convertedValue = exchangeRate * Number(amount); // Given currency's  value of entered amount of SEK
+      return { currency: key, amount: convertedValue };
     });
+
+    // console.debug("Converted values", latestConvertedValues);
+    setConvertedValues(latestConvertedValues);
   };
 
   return (
@@ -111,6 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     padding: 8,
+    marginVertical: 8,
   },
   inputLeftContainer: {
     flexDirection: "row",
