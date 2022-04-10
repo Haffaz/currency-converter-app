@@ -47,7 +47,7 @@ const CountriesPage = () => {
    * Takes the list of countries and filters by the given keyword.
    * @param countries: List of countries return from get all countries request
    * */
-  const getFilteredCountries = (countries: Country[]) => {
+  const getFilteredCountries = (countries: Country[]): Country[] => {
     return countries.filter((country) => country.name.official.includes(keyword));
   };
 

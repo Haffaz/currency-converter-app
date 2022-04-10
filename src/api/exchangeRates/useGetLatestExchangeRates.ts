@@ -8,8 +8,8 @@ type UseGetLatestRatesProps = {
   onSuccess: (resp: LatestRatesResponse) => void;
 };
 
-const getLatestExchangeRates = async ({ base }: GetLatestRatesParams) => {
-  const params = `?access_key=${API_KEY}&symbols=${base}`;
+const getLatestExchangeRates = async ({ symbols }: GetLatestRatesParams) => {
+  const params = `?access_key=${API_KEY}&symbols=${symbols}`;
   const res = await fetch(ROUTES.GET_LATEST_RATES + params, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

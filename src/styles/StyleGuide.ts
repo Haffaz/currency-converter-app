@@ -26,21 +26,4 @@ const StyleGuide = {
   },
 };
 
-// export const StackHeaderStyles: StackNavigationOptions = {
-//     headerTitleAlign: "center",
-//     headerBackTitleVisible: false,
-//     headerLeftContainerStyle: {
-//         marginLeft: StyleGuide.spacing.md,
-//     },
-//     headerRightContainerStyle: {
-//         marginRight: StyleGuide.spacing.md,
-//     },
-//     headerStyle: {
-//         backgroundColor: StyleGuide.palette.primary,
-//         elevation: 0,
-//         shadowColor: "transparent",
-//     },
-//     headerTintColor: "white",
-// };
-
 export default StyleGuide;

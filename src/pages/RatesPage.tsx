@@ -46,7 +46,7 @@ const RatesPage = ({ route }: Props) => {
    * */
   const fetchExchangeRates = () => {
     if (!!amount && amount.length > 0) {
-      mutate({ base: `${country.currencies.toLocaleString()},${SEK_CODE}` });
+      mutate({ symbols: `${country.currencies.toLocaleString()},${SEK_CODE}` });
     } else {
       Alert.alert("Invalid amount !", "Please enter an amount to be converted.");
     }

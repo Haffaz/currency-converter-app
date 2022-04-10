@@ -13,5 +13,5 @@ export interface Error {
 }
 
 export interface GetLatestRatesParams {
-  base: string;
+  symbols: string;
 }
